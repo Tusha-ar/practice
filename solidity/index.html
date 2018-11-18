@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel="stylesheet" type="text/css" href="main.css">
+
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+
+        <h1>Article</h1>
+
+        <h2 id="instructor"></h2>
+
+        <label for="name" class="col-lg-2 control-label">Article Name</label>
+        <input id="name" type="text">
+
+        <label for="name" class="col-lg-2 control-label">Article type</label>
+        <input id="age" type="text">
+
+        <label for="name" class="col-lg-2 control-label">word limit</label>
+        <input id="limit" type="text">
+        <button id="button">get info</button>
+
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+       if(typeof web3 !=='undefined')
+       {
+         web3 = new Web3(Web3.currentProvider);
+       }
+       else {
+         {
+           web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+         }
+       }
+       web3.eth.defaultAccount = web3.eth.accounts[1];
+       var Article = web3.eth.contract([[
+	{
+    [
+      
+      	{
+      		"constant": false,
+      		"inputs": [
+      			{
+      				"name": "_name",
+      				"type": "string"
+      			},
+      			{
+      				"name": "_topic",
+      				"type": "string"
+      			},
+      			{
+      				"name": "_wt",
+      				"type": "uint256"
+      			}
+      		],
+      		"name": "get_details",
+      		"outputs": [],
+      		"payable": false,
+      		"stateMutability": "nonpayable",
+      		"type": "function"
+      	},
+      	{
+      		"constant": true,
+      		"inputs": [],
+      		"name": "show_details",
+      		"outputs": [
+      			{
+      				"name": "",
+      				"type": "string"
+      			},
+      			{
+      				"name": "",
+      				"type": "string"
+      			},
+      			{
+      				"name": "",
+      				"type": "uint256"
+      			}
+      		],
+      		"payable": false,
+      		"stateMutability": "view",
+      		"type": "function"
+      	}
+
+])
+var Article_contarct = Article.at('0xc7fd506d98d7fe055c4aa0286872706e80ca27ca');
+console.log(Article_contarct);
+Article_contarct.show_details(function(error,result){
+  if(!error){
+    $("instructor").html(result[0]+'('+result[1]+'('+result[2]+' Words)');
+  }else
+  console.log(error);
+});
+$("#button").click(function(){
+  Article_contarct.get_details($("#name").val(), $("#type").val(), $("#range").val());
+});
+    </script>
+
+</body>
+</html>
